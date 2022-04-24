@@ -11,18 +11,21 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import './Header.css';
+import './Login.js';
+import Login from './Login.js';
 
-const pages = ['Diccionario', 'Torneos'];
+const pages = ['Diccionarios', 'Torneos'];
 const settings = ['Mis Torneos', 'Mis partidas', 'Logout'];
 
 const Header = () => { 
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -34,25 +37,16 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  
 
   const getSignedUpTemplate  = () => {
     return <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
              <Avatar />
            </IconButton> 
-  }
+  } 
 
   const getUnauthenticatedTemplate = () => {
-    return <Container 
-    open={Boolean(anchorElNav)}
-    onClose={handleCloseNavMenu}
-    sx={{ display: "flex", flexDirection: "row" }}>
-      <MenuItem key="Sign in">
-        <Typography sx={{ color: "#BFE3B4" }} textAlign="center">Sign in</Typography>
-      </MenuItem>
-      <MenuItem key="Sign up">
-        <Typography sx={{ color: "#BFE3B4" }} textAlign="center">Sign up</Typography>
-      </MenuItem>
-    </Container>
+    return (<Login/>)
   }
 
   const [loginTemplate, setLoginTemplate] = React.useState(getUnauthenticatedTemplate());
@@ -61,7 +55,7 @@ const Header = () => {
     let template = isAuthenticated ? getSignedUpTemplate() : getUnauthenticatedTemplate();
     setLoginTemplate(template)
   }
-
+  
   return (
     <AppBar position="static" className='navbar'>
       <Container maxWidth="xl">
@@ -132,7 +126,7 @@ const Header = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-              { loginTemplate }
+            {loginTemplate}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
