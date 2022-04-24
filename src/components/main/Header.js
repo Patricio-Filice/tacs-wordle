@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+import { Modal } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import './Header.css';
+import SignUpDialog from './SignUpDialog';
 
 const pages = ['Diccionario', 'Torneos'];
 const settings = ['Mis Torneos', 'Mis partidas', 'Logout'];
@@ -19,6 +21,14 @@ const Header = () => {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = React.useState(false);
+
+  const handleCloseSignUpDialog = () => {
+    setIsSignUpDialogOpen(false);
+  }
+  const handleOpenSignUpDialog = () => {
+    setIsSignUpDialogOpen(true);
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -49,7 +59,7 @@ const Header = () => {
       <MenuItem key="Sign in">
         <Typography sx={{ color: "#BFE3B4" }} textAlign="center">Sign in</Typography>
       </MenuItem>
-      <MenuItem key="Sign up">
+      <MenuItem key="Sign up" onClick={() => setIsSignUpDialogOpen(true)}>
         <Typography sx={{ color: "#BFE3B4" }} textAlign="center">Sign up</Typography>
       </MenuItem>
     </Container>
@@ -133,6 +143,7 @@ const Header = () => {
 
           <Box sx={{ flexGrow: 0 }}>
               { loginTemplate }
+              <SignUpDialog open={isSignUpDialogOpen} handleClose={handleCloseSignUpDialog}/>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
