@@ -3,12 +3,22 @@ import * as React from 'react';
 import { Container, MenuItem, Typography, Button } from '@mui/material';
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import Header from './Header.js'
+import SignUpDialog from './SignUpDialog'
 
 const Login = () => {
 
   const [signinOpen, setSigninOpen] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [isSignUpDialogOpen, setIsSignUpDialogOpen] = React.useState(false);
+
+  const handleCloseSignUpDialog = () => {
+    setIsSignUpDialogOpen(false);
+  }
+
+  const handleOpenSignUpDialog = () => {
+    setIsSignUpDialogOpen(true);
+  }
 
   const handleOpenSigninDialog = () => {
     setSigninOpen(true);
@@ -51,7 +61,7 @@ const Login = () => {
       <MenuItem key="Sign in" onClick={handleOpenSigninDialog}>
         <Typography sx={{ color: "#BFE3B4" }} textAlign="center">Sign in</Typography>
       </MenuItem>
-      <MenuItem key="Sign up">
+      <MenuItem key="Sign up" onClick={() => setIsSignUpDialogOpen(true)}>
         <Typography sx={{ color: "#BFE3B4" }} textAlign="center">Sign up</Typography>
       </MenuItem>
       <Dialog open={signinOpen} onClose={handleCloseSigninDialog} className='signinmodal'>
@@ -87,6 +97,7 @@ const Login = () => {
           <Button type='Submit' onClick={handleSigninPost}>Submit</Button>
         </DialogActions>
       </Dialog>
+      <SignUpDialog open={isSignUpDialogOpen} handleClose={handleCloseSignUpDialog}/>
     </Container>
   );
 };
