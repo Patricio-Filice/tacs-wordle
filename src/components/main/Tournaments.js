@@ -9,6 +9,7 @@ const Tournaments = () => {
         totalRows: 0,
         pageSize: 2,
         page: 1,
+        rowsPerPageOptions: [2, 5, 10, 20],
         sortBy: 'id',
         sortOrder:'ASCENDING',
       });
@@ -41,17 +42,12 @@ const Tournaments = () => {
         return { id, name, language, beginDate, endDate, state };
     }
 
-    // const handleGetPublicTournaments = async () => {
-        
-
-    // };
-
-    //const [rows, setRows] = React.useState([])
     const request = React.useRef(true);
     
     React.useEffect(() => {
         
         async function handleGetPublicTournaments() {
+            updateData("loading", true);
             const url = 'http://localhost:8080/api/tournaments/public'
             const params = ['page='+data.page,'pageSize='+data.pageSize,'sortBy='+data.sortBy,'sortOrder='+data.sortOrder].join('&')
             const requestOptions = {
@@ -62,6 +58,7 @@ const Tournaments = () => {
             const response = await fetch(url + '?' + params);
             const responseJson = await response.json()
             const rows = responseJson.pageItems.map((item) => createData(item.id, item.Name, item.language, item.startDate, item.endDate, item.tournamentState));
+            updateData("totalRows", responseJson.totalCount);
             updateData("rows", rows);
             updateData("loading", false);
         }
@@ -70,22 +67,25 @@ const Tournaments = () => {
             handleGetPublicTournaments();
             request.current = false
         }
-    }, [data.page]);
+    }, [data.page, data.pageSize]);
 
 
     return (
         <div style={{ height: '60%', width: '100%' }}>
             <DataGrid
+                density="compact"
+                autoHeight
                 pagination
                 loading={data.loading}
                 rows={data.rows}
                 columns={columns}
-                //page={page-1}
+                page={data.page-1}
                 pageSize={data.pageSize}
-                rowsPerPageOptions={[data.pageSize]}
-                rowCount={6}
+                rowsPerPageOptions={data.rowsPerPageOptions}
+                rowCount={data.totalRows}
                 paginationMode='server'
-                onPageChange={(p, d) => {updateData("page", p + 1); request.current = true;} }
+                onPageChange={ (p, d) => {updateData("page", p + 1); request.current = true;} }
+                onPageSizeChange={ (ps, d) => {console.log(ps);updateData("page", 1); updateData("pageSize", ps); request.current = true;} }
             />
         </div>
     )
