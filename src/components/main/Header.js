@@ -16,11 +16,10 @@ import './Login.js';
 import Login from './Login.js';
 
 
-const pages = ['Diccionarios', 'Torneos'];
+// const pages = ['Diccionarios', 'Torneos'];
 const settings = ['Mis Torneos', 'Mis partidas', 'Logout'];
 
-const Header = () => { 
-
+const Header = ({pages, handleTab}) => {   
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -57,7 +56,7 @@ const Header = () => {
     let template = isAuthenticated ? getSignedUpTemplate() : getUnauthenticatedTemplate();
     setLoginTemplate(template)
   }
-  
+  const handleMenuOnclick = (page) => {handleCloseNavMenu(); handleTab(page);}
   return (
     <AppBar position="static" className='navbar'>
       <Container maxWidth="xl">
@@ -99,9 +98,9 @@ const Header = () => {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
-            >
+            > 
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={()=> handleMenuOnclick(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -119,7 +118,7 @@ const Header = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={()=> handleMenuOnclick(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
