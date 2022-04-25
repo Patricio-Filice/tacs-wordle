@@ -12,11 +12,12 @@ function App() {
   const handleTab = (tab) => {
     setActiveTab(tab);
   }
+  
   return (
     <main>
-      <Header pages={pages} handleTab={handleTab}/>
+      <Header pages={pages} handleTab={handleTab} />
       <Home activeTab={activeTab}/>
-      <Footer/>
+      <Footer />
     </main>
   );
 }

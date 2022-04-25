@@ -56,7 +56,7 @@ const Header = ({pages, handleTab}) => {
     let template = isAuthenticated ? getSignedUpTemplate() : getUnauthenticatedTemplate();
     setLoginTemplate(template)
   }
-  const handleMenuOnclick = (page) => {handleCloseNavMenu(); handleTab(page);}
+  const handleMenuOnclick = (page) => {handleCloseNavMenu(); handleTab(page); }
   return (
     <AppBar position="static" className='navbar'>
       <Container maxWidth="xl">
