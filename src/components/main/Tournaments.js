@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
-const Tournaments = ({ tournaments }) => {
+const Tournaments = () => {
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70, sortable: false, },
@@ -25,13 +25,9 @@ const Tournaments = ({ tournaments }) => {
         beginDate: string,
         endDate: string,
         state: string,
-      ) {
+    ) {
         return { id, name, language, beginDate, endDate, state };
-      }
-
-    const [rows, setRows] = React.useState(_rows)
-
-    
+    }
 
     const handleGetPublicTournaments = async () => {
         const url = 'http://localhost:8080/api/tournaments/public'
@@ -45,12 +41,14 @@ const Tournaments = ({ tournaments }) => {
         const responseJson = await response.json()
         const data = responseJson.pageItems.map((item) => createData(item.id, item.Name, item.language, item.startDate, item.endDate, item.tournamentState));
         setRows(data);
-        
+
     };
-    
+
+    const [rows, setRows] = React.useState([])
     React.useEffect(() => {
         handleGetPublicTournaments();
     }, []);
+
 
     return (
         <div style={{ height: '60%', width: '100%' }}>

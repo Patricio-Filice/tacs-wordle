@@ -43,15 +43,9 @@ const Login = () => {
       console.log(response);
   }
 
-  const handleUsernameOnChange = (e) => {
-    setUsername(e.target.value);
-    console.log(username);
-  }
+  const handleUsernameOnChange = (e) => setUsername(e.target.value);
 
-  const handlepasswordOnChange = (e) => {
-    setPassword(e.target.value);
-    console.log(password);
-  }
+  const handlepasswordOnChange = (e) => setPassword(e.target.value);
 
   return (
     <Container

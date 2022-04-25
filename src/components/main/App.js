@@ -7,7 +7,7 @@ import Footer from './Footer'
 
 function App() {
   const pages = ['Diccionarios', 'Torneos'];
-  const [activeTab, setActiveTab] = React.useState()
+  const [activeTab, setActiveTab] = React.useState(pages[0]);
 
   const handleTab = (tab) => {
     setActiveTab(tab);
