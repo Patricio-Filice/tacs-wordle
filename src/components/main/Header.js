@@ -14,11 +14,12 @@ import MenuItem from '@mui/material/MenuItem';
 import './Header.css';
 import './Login.js';
 import Login from './Login.js';
+import { Link } from 'react-router-dom';
 
 // const pages = ['Diccionarios', 'Torneos'];
 const settings = ['Mis Torneos', 'Mis partidas', 'Logout'];
 
-const Header = ({pages, handleTab}) => {   
+const Header = ({ pages, handleTab }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,16 +38,16 @@ const Header = ({pages, handleTab}) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  
 
-  const getSignedUpTemplate  = () => {
+
+  const getSignedUpTemplate = () => {
     return <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-             <Avatar />
-           </IconButton> 
-  } 
+      <Avatar />
+    </IconButton>
+  }
 
   const getUnauthenticatedTemplate = () => {
-    return (<Login/>)
+    return (<Login />)
   }
 
   const [loginTemplate, setLoginTemplate] = React.useState(getUnauthenticatedTemplate());
@@ -55,7 +56,7 @@ const Header = ({pages, handleTab}) => {
     let template = isAuthenticated ? getSignedUpTemplate() : getUnauthenticatedTemplate();
     setLoginTemplate(template)
   }
-  const handleMenuOnclick = (page) => {handleCloseNavMenu(); handleTab(page);  }
+  const handleMenuOnclick = (page) => { handleCloseNavMenu(); handleTab(page); }
   return (
     <AppBar position="static" className='navbar'>
       <Container maxWidth="xl">
@@ -97,11 +98,13 @@ const Header = ({pages, handleTab}) => {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
-            > 
+            >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={()=> handleMenuOnclick(page)}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
+                <Link to={'/' + page} style={{textDecoration: 'none'}}>
+                  <MenuItem key={page} onClick={() => handleMenuOnclick(page)} style={{color: '#BFE3B4'}}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                </Link>
               ))}
             </Menu>
           </Box>
@@ -115,13 +118,15 @@ const Header = ({pages, handleTab}) => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={()=> handleMenuOnclick(page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link to={'/' + page} style={{textDecoration: 'none'}}>
+                <Button
+                  key={page}
+                  onClick={() => handleMenuOnclick(page)}
+                  sx={{ my: 2, color: 'white', display: 'block',}}
+                >
+                  {page}
+                </Button>
+              </Link>
             ))}
           </Box>
 

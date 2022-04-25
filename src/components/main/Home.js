@@ -1,20 +1,16 @@
 import * as React from 'react';
 import Tournaments from './Tournaments'
+import Dictionaries from './Dictionaries';
+import { Route, Routes } from 'react-router-dom';
 
 const Home = ({ activeTab }) => {
 
-  if (activeTab === 'Diccionarios')
-    return (
-      <p>{activeTab}</p>
-    );
-
-  if (activeTab === 'Torneos')
-    return (
-      <Tournaments></Tournaments>
-    );
-
-
-
+  return (
+    <Routes>
+      <Route path="/torneos" element={<Tournaments />} />
+      <Route path="/diccionarios" element={<Dictionaries activeTab={ activeTab } />} />
+    </Routes>
+  );
 
 }
 

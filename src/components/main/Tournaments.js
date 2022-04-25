@@ -3,6 +3,18 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 
 const Tournaments = () => {
 
+    const [data, setData] = React.useState({
+        loading: true,
+        rows: [],
+        totalRows: 0,
+        pageSize: 2,
+        page: 1,
+        sortBy: 'id',
+        sortOrder:'ASCENDING',
+      });
+    
+      const updateData = (k, v) => setData((prev) => ({ ...prev, [k]: v }));
+
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70, sortable: false, },
         { field: 'name', headerName: 'Name', width: 130, sortable: false, },
@@ -29,34 +41,51 @@ const Tournaments = () => {
         return { id, name, language, beginDate, endDate, state };
     }
 
-    const handleGetPublicTournaments = async () => {
-        const url = 'http://localhost:8080/api/tournaments/public'
-        const params = 'page=1&pageSize=1000&sortBy=id&sortOrder=ASCENDING'
-        const requestOptions = {
-            method: 'GET',
-            mode: 'cors',
-            headers: { 'Content-Type': 'application/json' },
-        };
-        const response = await fetch(url + '?' + params);
-        const responseJson = await response.json()
-        const data = responseJson.pageItems.map((item) => createData(item.id, item.Name, item.language, item.startDate, item.endDate, item.tournamentState));
-        setRows(data);
+    // const handleGetPublicTournaments = async () => {
+        
 
-    };
+    // };
 
-    const [rows, setRows] = React.useState([])
+    //const [rows, setRows] = React.useState([])
+    const request = React.useRef(true);
+    
     React.useEffect(() => {
-        handleGetPublicTournaments();
-    }, []);
+        
+        async function handleGetPublicTournaments() {
+            const url = 'http://localhost:8080/api/tournaments/public'
+            const params = ['page='+data.page,'pageSize='+data.pageSize,'sortBy='+data.sortBy,'sortOrder='+data.sortOrder].join('&')
+            const requestOptions = {
+                method: 'GET',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+            };
+            const response = await fetch(url + '?' + params);
+            const responseJson = await response.json()
+            const rows = responseJson.pageItems.map((item) => createData(item.id, item.Name, item.language, item.startDate, item.endDate, item.tournamentState));
+            updateData("rows", rows);
+            updateData("loading", false);
+        }
+        
+        if (request.current === true) {
+            handleGetPublicTournaments();
+            request.current = false
+        }
+    }, [data.page]);
 
 
     return (
         <div style={{ height: '60%', width: '100%' }}>
             <DataGrid
-                rows={rows}
+                pagination
+                loading={data.loading}
+                rows={data.rows}
                 columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                //page={page-1}
+                pageSize={data.pageSize}
+                rowsPerPageOptions={[data.pageSize]}
+                rowCount={6}
+                paginationMode='server'
+                onPageChange={(p, d) => {updateData("page", p + 1); request.current = true;} }
             />
         </div>
     )
